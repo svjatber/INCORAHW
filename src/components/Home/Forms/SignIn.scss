@@ -1,0 +1,82 @@
+.signInContainer {
+  display: flex;
+  margin: 5rem auto;
+  flex-direction: column;
+  max-width: 25vw;
+  box-sizing: content-box;
+  .title {
+    h2 {
+      margin: 0;
+    }
+    p {
+      margin: 0;
+      a {
+        color: #00bfff;
+        &:active {
+          opacity: 0.2;
+        }
+      }
+    }
+    padding: 3rem 0;
+  }
+  .forms {
+    .forms_signIn {
+      display: flex;
+      flex-direction: column;
+      .forms_input {
+        max-width: 25vw;
+        min-height: 1.5rem;
+        margin: 0.5rem 0;
+        padding: 4px;
+        color: #ccc;
+        box-sizing: content-box;
+      }
+      small {
+        text-align: right;
+        a {
+          color: #00bfff;
+        }
+        a:active {
+          opacity: 0.2;
+        }
+      }
+      .forms_radio {
+        display: block;
+        padding: 0;
+        margin: 1rem 0 5rem 0;
+      }
+      .forms_radio::after {
+        content: 'Remember me';
+        display: block;
+        margin-left: 1rem;
+        text-align: left;
+        min-width: 20vw;
+      }
+
+      .forms_button {
+        color: #fff;
+        padding: 5px;
+        background: #00bfff;
+        border: 1px solid #00bfff;
+        border-radius: 2px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .signInContainer {
+    margin: 2rem auto;
+    max-width: 400px;
+    .forms {
+      .forms_signIn {
+        .forms_input {
+          max-width: 100%;
+        }
+        .forms_radio {
+          margin: 1rem 0 2rem 0;
+        }
+      }
+    }
+  }
+}
