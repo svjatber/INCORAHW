@@ -1,3 +1,10 @@
+input {
+  outline: none;
+}
+button {
+  outline: none;
+}
+
 .signInContainer {
   display: flex;
   margin: 5rem auto;
@@ -31,6 +38,9 @@
         color: #ccc;
         box-sizing: content-box;
       }
+      .forms_input:focus {
+        border-color: #00bfff;
+      }
       small {
         text-align: right;
         a {
@@ -59,6 +69,9 @@
         background: #00bfff;
         border: 1px solid #00bfff;
         border-radius: 2px;
+      }
+      .forms_button:hover {
+        opacity: 0.7;
       }
     }
   }
