@@ -13,7 +13,7 @@ function Main() {
 
   return (
     <div>
-      <div>{page}</div>
+      <div>{page + 1}</div>
       <Pagination
         activePage={2}
         totalItems={40}
