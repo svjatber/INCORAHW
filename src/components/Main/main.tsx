@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
 import Pagination from '../Pagination/Pagination';
-import './App.css';
+
 
 function Main() {
   const [page, setPage] = useState<number>(1);
 
+  const onChangePage = (num: number) =>{
+    setPage(num)
+  }
+
+  console.log(page)
+
   return (
     <div>
-      <div>1</div>
+      <div>{page}</div>
       <Pagination
-        activePage={page}
+        activePage={2}
         totalItems={40}
+        withActions={true}
         perPage={4}
         classes={{ btn: 'btn', activeBtn: 'activeBtn' }}
-        onChangePage={setPage}
+        onChangePage={onChangePage}
       />
     </div>
   );

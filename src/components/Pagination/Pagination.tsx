@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import cn from 'classnames';
 
 interface PaginationProps {
   activePage: number;
@@ -18,15 +17,17 @@ const Pagination = ({
   totalItems,
   perPage,
   withActions,
-  classes,
   onChangePage
 }: PaginationProps) => {
+
   const [activePageLocal, setActivePageLocal] = useState<number>(activePage);
   const countPage = Math.round(totalItems / perPage);
 
   const onChange = (newCount: number) => {
+    console.log(newCount)
     setActivePageLocal(newCount);
     onChangePage(newCount);
+
   };
 
   return (
@@ -39,16 +40,11 @@ const Pagination = ({
       {Array.from({ length: countPage }).map((v, index) => {
         return (
           <div>
-            {withActions && (
-              <button disabled={index === 0} onChange={() => index - 1}>
-                Previous
-              </button>
-            )}
             <button
-              onChange={() => onChangePage(index)}
-              className={cn(classes?.btn, {
-                [classes?.activeBtn || '']: activePage === index
-              })}
+              onClick={() => onChange(index)}
+              // className={(classes?.btn, {
+              //   [classes?.activeBtn || '']: activePage === index
+              // })}
             >
               {index + 1}
             </button>
@@ -56,7 +52,7 @@ const Pagination = ({
         );
       })}
       {withActions && (
-        <button disabled={activePageLocal === countPage} onClick={() => onChange(activePageLocal + 1)}>
+        <button disabled={activePageLocal === countPage - 1} onClick={() => onChange(activePageLocal + 1)}>
           Next
         </button>
       )}
