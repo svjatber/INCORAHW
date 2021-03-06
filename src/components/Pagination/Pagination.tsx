@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-
+import './Pagination.scss';
+import cn from 'classnames';
 interface PaginationProps {
   activePage: number;
   totalItems: number;
@@ -17,23 +18,21 @@ const Pagination = ({
   totalItems,
   perPage,
   withActions,
-  onChangePage
+  onChangePage,
+  classes
 }: PaginationProps) => {
-
-  const [activePageLocal, setActivePageLocal] = useState<number>(activePage);
   const countPage = Math.round(totalItems / perPage);
 
-  const onChange = (newCount: number) => {
-    console.log(newCount)
-    setActivePageLocal(newCount);
-    onChangePage(newCount);
+  console.log(activePage);
 
+  const onChange = (newCount: number) => {
+    onChangePage(newCount);
   };
 
   return (
-    <div>
+    <div className={'pagination'}>
       {withActions && (
-        <button disabled={activePageLocal === 0} onClick={() => onChange(activePageLocal - 1)}>
+        <button disabled={activePage === 0} onClick={() => onChange(activePage - 1)}>
           Previous
         </button>
       )}
@@ -42,9 +41,7 @@ const Pagination = ({
           <div>
             <button
               onClick={() => onChange(index)}
-              // className={(classes?.btn, {
-              //   [classes?.activeBtn || '']: activePage === index
-              // })}
+              className={cn(classes?.btn, { [classes?.activeBtn || '']: activePage === index })}
             >
               {index + 1}
             </button>
@@ -52,7 +49,7 @@ const Pagination = ({
         );
       })}
       {withActions && (
-        <button disabled={activePageLocal === countPage - 1} onClick={() => onChange(activePageLocal + 1)}>
+        <button disabled={activePage === countPage - 1} onClick={() => onChange(activePage + 1)}>
           Next
         </button>
       )}
