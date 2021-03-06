@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Timer } from '../timer/Timer';
 
-export const Main = (): any => {
+export const Main = () => {
   const onTimeEnd = () => {
     console.log('timer finish');
   };
