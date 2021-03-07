@@ -22,7 +22,7 @@ export const Main = () => {
     <div>
       <Timer
         time={60}
-        step={500}
+        step={5000}
         autostart={false}
         onTimeEnd={onTimeEnd}
         onTimeStart={onTimeStart}
