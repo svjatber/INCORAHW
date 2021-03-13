@@ -1,24 +1,17 @@
 import React from 'react';
+import { useRef } from 'react';
 import './App.css';
-import { Product, useProducts } from './timer';
+import { Product, useProducts } from './useProduct';
 
-interface Itimer{
-  time: number,
-  startTimer?:()=>void,
-  stopTimer?:()=>void,
-  pauseTimer?:()=>void,
-  isPaused?:boolean,
-  isFinished?:boolean
-}
 
 function App() {
 
-  const { products, page, total, changePage, applyFilter, editProduct, deleteProduct, addProduct } = useProducts( { perPage: 6 });
+  const { products, page, total, changePage, applyFilter, editProduct, deleteProduct, addProduct } = useProducts( { perPage: 2 });
+  const inputEl = useRef<HTMLInputElement | null>(null);
+
+  console.log(products)
 
 
-
-  // @ts-ignore
-  // @ts-ignore
   return(
     <div>
       {Array.from({ length: total }).map((v, index) => {
@@ -38,6 +31,10 @@ function App() {
           );
         })}
       <button onClick={()=> addProduct({id: 56, name: 'watermelon', price: 1500})}>Add</button>
+      <button onClick={()=>applyFilter({priceLess: 1})}>Sort less</button>
+      <button onClick={()=>applyFilter({priceLess: 1, priceMore: 1})}>Sort more</button>
+      <input type="text" ref={inputEl}/>
+      <button onClick={()=>applyFilter({priceLess: 1,name: inputEl.current?.value})}>Name</button>
     </div>
 
   )

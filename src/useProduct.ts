@@ -67,6 +67,7 @@ export const useProducts = ({perPage}: IPerPage, initialArray: Product[] = produ
   const [products, setProducts] = useState<Product[] | []>([])
   const [total,setTotal] = useState<number>(0)
 
+  console.log(products)
   const totalFunc = useMemo(()=> setTotal(Math.ceil(productsArray.length / perPage)),[perPage]);
 
   const productsFunc = useMemo(()=> {
@@ -83,12 +84,26 @@ export const useProducts = ({perPage}: IPerPage, initialArray: Product[] = produ
   },[total])
 
   const applyFilter = (obj: IFilterOptions) =>{
+    if(obj.name){
+      let productsFilterByName = products.filter((v: Product)=> v.name === obj.name)
+      setProducts(productsFilterByName);
+      return;
+    }
+    if(obj.priceMore){
+      let productsSortByMore = products.sort((a: Product, b: Product) => b.price - a.price)
+      setProducts([...productsSortByMore])
+      return
+    }
+    if(obj.priceLess){
+      let productsSortByLess = products.sort((a: Product, b: Product) =>  a.price - b.price )
+      setProducts([...productsSortByLess])
+      return;
+    }
 
   }
 
   const editProduct = (prod: Product) =>{
-    // @ts-ignore
-    let productsEdit = products.map((value: Product) => {
+    let productsEdit = (products as  Array<Product[] | []>).map((value: Product | any) => {
       if(value.id === prod.id){
         return prod
       }
