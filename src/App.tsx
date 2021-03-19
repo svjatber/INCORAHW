@@ -1,42 +1,48 @@
 import React from 'react';
-import { useRef } from 'react';
 import './App.css';
-import { Product, useProducts } from './useProduct';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProducts, deleteProduct, editProduct } from './state/actions/products';
+import { allProducts } from './state/selector/productsSelector';
 
+export type Obj = {
+  id: number | string,
+  name: string
+}
 
 function App() {
+  const dispatch = useDispatch()
+  const products = useSelector(allProducts)
 
-  const { products, page, total, changePage, applyFilter, editProduct, deleteProduct, addProduct } = useProducts( { perPage: 2 });
-  const inputEl = useRef<HTMLInputElement | null>(null);
+  const deleteProducts = (v: Obj) => {
+    dispatch(deleteProduct(v))
+  }
 
-  console.log(products)
+  const editProductHandler = (v: Obj) =>{
+    dispatch(editProduct(v))
+  }
 
 
-  return(
+  return (
     <div>
-      {Array.from({ length: total }).map((v, index) => {
-        return (
-          <button onClick={()=>changePage(index + 1)}>{index + 1}</button>
-        );
-      })}
-      {
-        (products as  Array<Product[] | []>).map((v: any)=>{
-          return(
-            <div>
-              <h2>{v.name}<span>{v.price}</span></h2>
-              <button onClick={()=>editProduct({id: v.id, name: 'pineapple', price: 300})}>Edit</button>
-              <button onClick={()=>deleteProduct(v)}>delete</button>
-            </div>
+      <div>
+        {
+          products.map((v: any)=>{
+            return (
+              <div key={v.id}>
+                <h2>{v.id}</h2>
+                <h3>{v.name}</h3>
+                <button onClick={()=> deleteProducts(v)}>delete</button>
+                <button onClick={()=> editProductHandler({id: v.id, name: 'editItem'})}>edit</button>
+              </div>
+            )
 
-          );
-        })}
-      <button onClick={()=> addProduct({id: 56, name: 'watermelon', price: 1500})}>Add</button>
-      <button onClick={()=>applyFilter({priceLess: 1})}>Sort less</button>
-      <button onClick={()=>applyFilter({priceLess: 1, priceMore: 1})}>Sort more</button>
-      <input type="text" ref={inputEl}/>
-      <button onClick={()=>applyFilter({priceLess: 1,name: inputEl.current?.value})}>Name</button>
+          })
+        }
+      </div>
+      <button onClick={()=> dispatch(addProducts({id: Date.now(), name: 'newItem'}))}>
+        Add Product
+      </button>
     </div>
-
   )
 }
 
