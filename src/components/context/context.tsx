@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 
 interface MainComponentProps {
   children: React.ReactNode;
@@ -6,9 +6,9 @@ interface MainComponentProps {
 
 interface TextProps {
   products: any;
-  addProducts(value: ICount): void;
+  addProducts(value: any): void;
   basket: any;
-  deleteBasket(value: ICount): void;
+  deleteBasket(value: any): void;
 }
 
 export interface Product {
@@ -76,34 +76,45 @@ const { Provider, Consumer } = React.createContext<TextProps>({
   deleteBasket: () => {}
 });
 
-const MainComponentProvider = ({ children }: MainComponentProps) => {
-  const [products, setProducts] = useState<any>([]);
-  const [basket, setBasket] = useState<any>([]);
+const reducer = (state: any, action: any) => {
+  switch (action.type) {
+    case 'ADD_PRODUCTS': {
+      const productItem = state.basket.find((v: ICount) => v.id === action.payload.id);
+      if (productItem) {
+        productItem.count += 1;
+        const result = state.basket.map((x: ICount) => {
+          if (x.id === productItem.id) {
+            return productItem;
+          }
+          return x;
+        });
 
-  useEffect(() => {
-    setProducts(productsArr);
-  }, []);
+        return { ...state, basket: [...result] };
+      }
+      action.payload.count = 1;
+      return { ...state, basket: [...state.basket, action.payload] };
+    }
+    case 'DELETE_BASKET': {
+      const deleteBasket = state.basket.filter((v: ICount) => v.id !== action.payload.id);
+      return { ...state, basket: deleteBasket };
+    }
+    default:
+      return state;
+  }
+};
+
+const MainComponentProvider = ({ children }: MainComponentProps) => {
+  // @ts-ignore
+  const [{ products, basket }, dispatch] = useReducer<any>(reducer, { products: productsArr, basket: [] });
 
   const addProducts = (p: ICount) => {
-    const productItem = basket.find((v: ICount) => v.id === p.id);
-    if (productItem) {
-      productItem.count += 1;
-      const result = basket.map((x: ICount) => {
-        if (x.id === productItem.id) {
-          return productItem;
-        }
-        return x;
-      });
-      setBasket(result);
-      return;
-    }
-    p.count = 1;
-    setBasket([...basket, p]);
+    // @ts-ignore
+    dispatch({ type: 'ADD_PRODUCTS', payload: p });
   };
 
   const deleteBasket = (p: ICount) => {
-    const deleteBasket = basket.filter((v: ICount) => v.id !== p.id);
-    setBasket(deleteBasket);
+    // @ts-ignore
+    dispatch({ type: 'DELETE_BASKET', payload: p });
   };
 
   return <Provider value={{ products, addProducts, basket, deleteBasket }}>{children}</Provider>;

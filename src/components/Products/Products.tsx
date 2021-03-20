@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICount, MainComponentConsumer, Product } from '../context/context';
+import { MainComponentConsumer } from '../context/context';
 
 export const Products = () => {
   // @ts-ignore
@@ -9,7 +9,7 @@ export const Products = () => {
       <MainComponentConsumer>
         {context => (
           <div>
-            {context.products.map((v: ICount) => (
+            {context.products.map((v: any) => (
               <>
                 <li>
                   {v.name}-{v.price}
