@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import Main from './components/Main/main';
+import { NotFound } from './Not Found';
 
 function App() {
   return (
     <>
-      <Main />
+      <NotFound />
     </>
   );
 }
