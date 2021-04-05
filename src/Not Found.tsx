@@ -1,4 +1,5 @@
 import { loginUser, registerUser } from './api/auth/endpoints';
+import { useHotels } from './hooks/useHotel';
 
 export const NotFound = () => {
   const createUser = () => {
@@ -22,10 +23,36 @@ export const NotFound = () => {
       console.log(e);
     }
   };
+
+  const { data, addHotel } = useHotels();
+  console.log(data);
+
+  const createPost = () => {
+    addHotel({
+      name: 'svjatasssss',
+      description: 'aa',
+      phone: 'aa',
+      address: {
+        country: 'aa',
+        city: 'aa',
+        state: 'aa',
+        street: 'aa',
+        address1: 'aa',
+        address2: 'aa',
+        zip: 0,
+        location: {
+          latitude: 'aa',
+          longtitude: 'aa'
+        }
+      }
+    });
+  };
+
   return (
     <div>
       <button onClick={createUser}>Register</button>
       <button onClick={loginUserInt}>Login</button>
+      <button onClick={createPost}>postHotel</button>
     </div>
   );
 };
