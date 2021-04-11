@@ -1,58 +1,40 @@
-import { loginUser, registerUser } from './api/auth/endpoints';
-import { useHotels } from './hooks/useHotel';
+import React, { useEffect } from 'react';
+import { Formik, Form, Field } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadWeather } from './state/actions/weather/action';
+import { WeatherBlock } from './components/weatherBlock';
+const defaultValue: any = {
+  city: 'Kyiv'
+};
 
 export const NotFound = () => {
-  const createUser = () => {
-    registerUser({
-      email: 'svjat@mail.com',
-      firstName: 'sv',
-      lastName: 'dsfsfdfsdsfd',
-      password: 'cxvxvdcxsfdfsd'
-    });
-  };
-  const loginUserInt = async () => {
-    try {
-      const res = await loginUser({
-        email: 'svjatber@mail.com',
-        password: 'cxvxvdcxsfdfsd'
-      });
-      const { access_token, refresh_token } = res.data;
-      localStorage.setItem('token', access_token);
-      localStorage.setItem('refresh_token', refresh_token);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const dispatch = useDispatch();
 
-  const { data, addHotel } = useHotels();
-  console.log(data);
-
-  const createPost = () => {
-    addHotel({
-      name: 'svjatasssss',
-      description: 'aa',
-      phone: 'aa',
-      address: {
-        country: 'aa',
-        city: 'aa',
-        state: 'aa',
-        street: 'aa',
-        address1: 'aa',
-        address2: 'aa',
-        zip: 0,
-        location: {
-          latitude: 'aa',
-          longtitude: 'aa'
-        }
-      }
-    });
-  };
+  const weatherResponseData = useSelector((state: any) => {
+    return state.weather;
+  });
+  useEffect(() => {
+    dispatch(loadWeather(defaultValue.city));
+  }, []);
 
   return (
     <div>
-      <button onClick={createUser}>Register</button>
-      <button onClick={loginUserInt}>Login</button>
-      <button onClick={createPost}>postHotel</button>
+      <Formik
+        initialValues={defaultValue}
+        onSubmit={values => {
+          dispatch(loadWeather(values.city));
+        }}
+      >
+        <Form>
+          <Field type='text' name='city' placeholder='Enter city ...' />
+          <button type='submit'>Шукати</button>
+        </Form>
+      </Formik>
+      <h3>
+        {weatherResponseData.city.name}({weatherResponseData.city.coord.lon} -{' '}
+        {weatherResponseData.city.coord.lat} )
+      </h3>
+      <WeatherBlock wind={weatherResponseData.wind} main={weatherResponseData.main} />
     </div>
   );
 };
